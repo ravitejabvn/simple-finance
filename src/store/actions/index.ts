@@ -1,0 +1,6 @@
+export const FinanceActions = {
+  GET_LOANS_DATA: "GET_LOANS_DATA",
+  INITIAL_LOAD: "INITIAL_LOAD",
+  GET_USER_DATA: "GET_USER_DATA",
+  SET_USER_DATA: "SET_USER_DATA",
+};
