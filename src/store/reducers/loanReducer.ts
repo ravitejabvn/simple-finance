@@ -11,7 +11,7 @@ export const LoanReducer = (
   action: { type: string; payload?: any }
 ) => {
   switch (action.type) {
-    case FinanceActions.GET_LOANS_DATA: {
+    case FinanceActions.SET_LOANS_DATA: {
       return { ...state, rowData: action.payload.rowData };
     }
     case FinanceActions.SET_USER_DATA: {

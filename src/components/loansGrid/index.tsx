@@ -6,7 +6,7 @@ import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { loansSelector } from "../../store/selectors/loanSelector";
 import { FinanceActions } from "../../store/actions";
-import { CellClickedEvent } from "ag-grid-community";
+import { CellClickedEvent, NewValueParams } from "ag-grid-community";
 
 export const LoanGrid = () => {
   const dispatch = useDispatch();
@@ -27,6 +27,19 @@ export const LoanGrid = () => {
     });
   };
 
+  const updateLoanTerm = (event: NewValueParams) => {
+    const userLoanDetails = event.data;
+    dispatch({
+      type: FinanceActions.UPDATE_LOANS_DATA,
+      payload: {
+        userLoanDetails: {
+          ...userLoanDetails,
+          Loan_Paid_Term: Number(event.newValue),
+        },
+      },
+    });
+  };
+
   return (
     <div className="ag-theme-alpine" style={{ height: 400, width: "100%" }}>
       <AgGridReact rowData={rowData}>
@@ -37,7 +50,11 @@ export const LoanGrid = () => {
         <AgGridColumn field="ApplicantIncome"></AgGridColumn>
         <AgGridColumn field="LoanAmount"></AgGridColumn>
         <AgGridColumn field="Loan_Amount_Term"></AgGridColumn>
-        <AgGridColumn field="Loan_Paid_Term"></AgGridColumn>
+        <AgGridColumn
+          field="Loan_Paid_Term"
+          editable={true}
+          onCellValueChanged={updateLoanTerm}
+        ></AgGridColumn>
         <AgGridColumn field="Property_Type"></AgGridColumn>
         <AgGridColumn field="Property_Area"></AgGridColumn>
         <AgGridColumn field="Loan_Status"></AgGridColumn>

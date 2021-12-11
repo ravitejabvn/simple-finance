@@ -1,13 +1,15 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest, select } from "redux-saga/effects";
 import { interestCalc } from "../../helpers/interestCalculator";
 import { ILoanDetails } from "../../models/loanDetails";
+import { ILoans } from "../../models/loans";
 import { getLoansData } from "../../services";
 import { FinanceActions } from "../actions/";
+import { loansSelector, selectedUserSelector } from "../selectors/loanSelector";
 
 function* fetchData() {
   const { data } = yield call(getLoansData);
   yield put({
-    type: FinanceActions.GET_LOANS_DATA,
+    type: FinanceActions.SET_LOANS_DATA,
     payload: { rowData: data },
   });
   yield call(getUserDetails, { payload: data[0] });
@@ -33,7 +35,26 @@ function* getUserDetails(action: any) {
   });
 }
 
+function* updateLoansData(action: any) {
+  const loansData: ILoans[] = yield select(loansSelector);
+  const selectedUser: ILoanDetails = yield select(selectedUserSelector);
+  const { userLoanDetails } = action.payload;
+  const rowData = loansData.map((loan) => {
+    if (loan.User_ID === userLoanDetails.User_ID) return { ...userLoanDetails };
+    return { ...loan };
+  });
+  yield put({
+    type: FinanceActions.SET_LOANS_DATA,
+    payload: { rowData },
+  });
+
+  if (userLoanDetails.User_ID === selectedUser.userName) {
+    yield call(getUserDetails, { payload: userLoanDetails });
+  }
+}
+
 export const loansSaga = [
   takeLatest(FinanceActions.INITIAL_LOAD, fetchData),
   takeLatest(FinanceActions.GET_USER_DATA, getUserDetails),
+  takeLatest(FinanceActions.UPDATE_LOANS_DATA, updateLoansData),
 ];

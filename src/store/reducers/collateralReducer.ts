@@ -1,17 +1,16 @@
-import { ILoanDetails } from "../../models/loanDetails";
-import { ILoanGrid } from "../../models/loanGrid";
-import { ILoans } from "../../models/loans";
+import { ICollateralDetails } from "../../models/collateralDetails";
 import { FinanceActions } from "../actions";
 
 export const CollateralReducer = (
-  state: ILoanGrid = { rowData: [] as ILoans[], selectedUser: {} as ILoanDetails },
+  state: ICollateralDetails = { propArea: 0, propType: "", propLocation: "" },
   action: { type: string; payload?: any }
 ) => {
   switch (action.type) {
-    case FinanceActions.GET_LOANS_DATA: {
-      return { ...state, rowData: action.payload.rowData };
+    case FinanceActions.SET_COLLATERAL_DATA: {
+      const { propArea, propType, propLocation } = action.payload;
+      return { ...state, propArea, propType, propLocation };
     }
     default:
-      return { state };
+      return state;
   }
 };

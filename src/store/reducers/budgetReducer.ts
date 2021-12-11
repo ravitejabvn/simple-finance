@@ -1,17 +1,16 @@
-import { ILoanDetails } from "../../models/loanDetails";
-import { ILoanGrid } from "../../models/loanGrid";
-import { ILoans } from "../../models/loans";
+import { IBudgetDetails } from "../../models/budgetDetails";
 import { FinanceActions } from "../actions";
 
 export const BudgetReducer = (
-  state: ILoanGrid = { rowData: [] as ILoans[], selectedUser: {} as ILoanDetails },
+  state: IBudgetDetails = { applicantIncome: 0, coApplicantIncome: 0 },
   action: { type: string; payload?: any }
 ) => {
   switch (action.type) {
-    case FinanceActions.GET_LOANS_DATA: {
-      return { ...state, rowData: action.payload.rowData };
+    case FinanceActions.SET_BUDGET_DATA: {
+      const { applicantIncome, coApplicantIncome } = action.payload;
+      return { ...state, applicantIncome, coApplicantIncome };
     }
     default:
-      return { state };
+      return state;
   }
 };
