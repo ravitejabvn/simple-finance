@@ -1,18 +1,21 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { collateralSelector } from "../../store/selectors/loanSelector";
 import { CardStyles } from "./styles";
 
 export const CollateralCard = () => {
+  const collateralDetails = useSelector(collateralSelector);
   return (
     <CardStyles>
       Collateral Details
       <div className="flex-container">
         <div className="d-block">
           <div>Property Location</div>
-          <div>123</div>
+          <div>{collateralDetails.propLocation}</div>
         </div>
         <div className="d-block">
           <div>Type</div>
-          <div>123</div>
+          <div>{collateralDetails.propType}</div>
         </div>
       </div>
       <div className="flex-container">
@@ -21,7 +24,7 @@ export const CollateralCard = () => {
           <div>123</div>
         </div>
       </div>
-      <div className="flex-container">
+      {/* <div className="flex-container">
         <div className="d-block">
           <div>Loan Eligibility</div>
           <div>123</div>
@@ -30,7 +33,7 @@ export const CollateralCard = () => {
           <div>Mortgage</div>
           <div>123</div>
         </div>
-      </div>
+      </div> */}
     </CardStyles>
   );
 };

@@ -17,8 +17,7 @@ function* fetchData() {
 
 function* getUserDetails(action: any) {
   const data = action.payload;
-  const { interestRate, monthlyEMI, ratePerMonth, totalAmount } =
-    interestCalc(data);
+  const { interestRate, monthlyEMI, totalAmount } = interestCalc(data);
 
   const userData = {
     userName: data.User_ID,
@@ -32,6 +31,23 @@ function* getUserDetails(action: any) {
   yield put({
     type: FinanceActions.SET_USER_DATA,
     payload: { selectedUser: userData },
+  });
+
+  yield put({
+    type: FinanceActions.SET_BUDGET_DATA,
+    payload: {
+      applicantIncome: data.ApplicantIncome,
+      coApplicantIncome: data.CoapplicantIncome,
+    },
+  });
+
+  yield put({
+    type: FinanceActions.SET_COLLATERAL_DATA,
+    payload: {
+      propArea: 0,
+      propType: data.Property_Type,
+      propLocation: data.Property_Area,
+    },
   });
 }
 
